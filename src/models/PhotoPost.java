@@ -2,7 +2,7 @@ package models;
 
 import utils.Utilities;
 
-public class PhotoPost extends Post {
+public class PhotoPost extends LikedPost{
 
     private String caption = "";
     private String filename = "";

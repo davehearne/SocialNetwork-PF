@@ -2,7 +2,7 @@ package models;
 
 import utils.Utilities;
 
-public class MessagePost extends Post{
+public class MessagePost extends LikedPost{
 
     private String message = "";
 
