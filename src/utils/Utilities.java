@@ -40,7 +40,7 @@ public class Utilities {
      * @return if is valid boolean
      */
     public static boolean validateCostRange (double eventCost, int minRange, int maxRange){
-        if(eventCost > minRange && eventCost <= maxRange ){
+        if(eventCost >= minRange && eventCost <= maxRange ){
             return true;
         }
         return false;

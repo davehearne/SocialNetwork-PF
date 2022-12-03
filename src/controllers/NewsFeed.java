@@ -3,19 +3,29 @@ package controllers;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import models.*;
+import utils.ISerializer;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
-public class NewsFeed {
+public class NewsFeed implements ISerializer {
 
-    private ArrayList<Post> posts;
+    private List<Post> posts;
 
     public NewsFeed() {
-        posts = new ArrayList<Post>();
+        posts = new ArrayList<>();
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     public boolean addPost(Post post) {
@@ -25,14 +35,13 @@ public class NewsFeed {
     public String show() {
         String str = "";
 
-        for(Post post: posts) {
+        for (Post post : posts) {
             str += posts.indexOf(post) + ": " + post.displayCondensed() + "\n";
         }
 
-        if (str.isEmpty()){
+        if (str.isEmpty()) {
             return "No Posts";
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -40,16 +49,15 @@ public class NewsFeed {
     public String showPhotoPosts() {
         String str = "";
 
-        for(Post post: posts) {
+        for (Post post : posts) {
             if (post instanceof PhotoPost) {
                 str += posts.indexOf(post) + ": " + post.display() + "\n";
             }
         }
 
-        if (str.isEmpty()){
+        if (str.isEmpty()) {
             return "No Photo Posts";
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -57,16 +65,15 @@ public class NewsFeed {
     public String showMessagePosts() {
         String str = "";
 
-        for(Post post: posts) {
+        for (Post post : posts) {
             if (post instanceof MessagePost) {
                 str += posts.indexOf(post) + ": " + post.display() + "\n";
             }
         }
 
-        if (str.isEmpty()){
+        if (str.isEmpty()) {
             return "No Message Posts";
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -74,16 +81,15 @@ public class NewsFeed {
     public String showEventPosts() {
         String str = "";
 
-        for(Post post: posts) {
+        for (Post post : posts) {
             if (post instanceof EventPost) {
                 str += posts.indexOf(post) + ": " + post.display() + "\n";
             }
         }
 
-        if (str.isEmpty()){
+        if (str.isEmpty()) {
             return "No Event Posts";
-        }
-        else {
+        } else {
             return str;
         }
     }
@@ -117,7 +123,7 @@ public class NewsFeed {
 
         //if the object exists, use the details passed in the parameters to
         //update the found object in the ArrayList.
-        if ((foundPost != null) && (foundPost instanceof PhotoPost)){
+        if ((foundPost != null) && (foundPost instanceof PhotoPost)) {
             foundPost.setAuthor(author);
             ((PhotoPost) foundPost).setCaption(caption);
             ((PhotoPost) foundPost).setFilename(filename);
@@ -134,7 +140,7 @@ public class NewsFeed {
 
         //if the object exists, use the details passed in the parameters to
         //update the found object in the ArrayList.
-        if ((foundPost != null) && (foundPost instanceof EventPost)){
+        if ((foundPost != null) && (foundPost instanceof EventPost)) {
             foundPost.setAuthor(author);
             ((EventPost) foundPost).setEventName(eventName);
             ((EventPost) foundPost).setEventCost(eventCost);
@@ -158,8 +164,8 @@ public class NewsFeed {
 
     public int numberOfMessagePosts() {
         int number = 0;
-        for (Post post: posts){
-            if (post instanceof MessagePost){
+        for (Post post : posts) {
+            if (post instanceof MessagePost) {
                 number++;
             }
         }
@@ -168,8 +174,8 @@ public class NewsFeed {
 
     public int numberOfPhotoPosts() {
         int number = 0;
-        for (Post post: posts){
-            if (post instanceof PhotoPost){
+        for (Post post : posts) {
+            if (post instanceof PhotoPost) {
                 number++;
             }
         }
@@ -178,8 +184,8 @@ public class NewsFeed {
 
     public int numberOfEventPosts() {
         int number = 0;
-        for (Post post: posts){
-            if (post instanceof EventPost){
+        for (Post post : posts) {
+            if (post instanceof EventPost) {
                 number++;
             }
         }
@@ -190,7 +196,7 @@ public class NewsFeed {
         Post post = null;
         if (isValidIndex(index)) {
             post = posts.get(index);
-            if ((post instanceof LikedPost)){
+            if ((post instanceof LikedPost)) {
                 ((LikedPost) post).likeAPost();
             }
         }
@@ -200,21 +206,22 @@ public class NewsFeed {
         Post post = null;
         if (isValidIndex(index)) {
             post = posts.get(index);
-            if ((post instanceof LikedPost)){
+            if ((post instanceof LikedPost)) {
                 ((LikedPost) post).unlikeAPost();
             }
         }
     }
+
     /**
      * The load method uses the XStream component to read all the models.MessagePost objects from the posts.xml
      * file stored on the hard disk.  The read objects are loaded into the posts ArrayList
      *
-     * @throws Exception  An exception is thrown if an error occurred during the load e.g. a missing file.
+     * @throws Exception An exception is thrown if an error occurred during the load e.g. a missing file.
      */
     @SuppressWarnings("unchecked")
     public void load() throws Exception {
         //list of classes that you wish to include in the serialisation, separated by a comma
-        Class<?>[] classes = new Class[] { EventPost.class, MessagePost.class, PhotoPost.class, Post.class};
+        Class<?>[] classes = new Class[]{EventPost.class, MessagePost.class, PhotoPost.class, Post.class};
 
         //setting up the xstream object with default security and the above classes
         XStream xstream = new XStream(new DomDriver());
@@ -223,7 +230,7 @@ public class NewsFeed {
 
         //doing the actual serialisation to an XML file
         ObjectInputStream in = xstream.createObjectInputStream(new FileReader("posts.xml"));
-        posts = (ArrayList<Post>) in.readObject();
+        posts = (List<Post>) in.readObject();
         in.close();
     }
 
@@ -231,7 +238,7 @@ public class NewsFeed {
      * The save method uses the XStream component to write all the objects in the posts ArrayList
      * to the posts.xml file stored on the hard disk.
      *
-     * @throws Exception  An exception is thrown if an error occurred during the save e.g. drive is full.
+     * @throws Exception An exception is thrown if an error occurred during the save e.g. drive is full.
      */
     public void save() throws Exception {
         XStream xstream = new XStream(new DomDriver());
@@ -239,6 +246,10 @@ public class NewsFeed {
         out.writeObject(posts);
         out.close();
 
+    }
+
+    public String fileName(){
+        return "posts.xml";
     }
 
     public boolean isValidIndex(int index) {
