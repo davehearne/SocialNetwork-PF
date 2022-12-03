@@ -301,6 +301,7 @@ public class Driver {
     //save all the posts in the newsFeed to a file on the hard disk
     private void savePosts() {
         try {
+            System.out.println("Saving to file: " + newsFeed.fileName());
             newsFeed.save();
         } catch (Exception e) {
             System.err.println("Error writing to file: " + e);
@@ -310,10 +311,10 @@ public class Driver {
     //load all the posts into the newsFeed from a file on the hard disk
     private void loadPosts() {
         try {
+            System.out.println("Loading from file: " + newsFeed.fileName());
             newsFeed.load();
         } catch (Exception e) {
             System.err.println("Error reading from file: " + e);
         }
     }
-
 }

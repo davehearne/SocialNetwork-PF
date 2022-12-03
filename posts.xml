@@ -11,5 +11,10 @@
       <caption>new iamge</caption>
       <filename>image.jpeg</filename>
     </models.PhotoPost>
+    <models.MessagePost>
+      <author>Dave</author>
+      <likes>0</likes>
+      <message>Hello World!</message>
+    </models.MessagePost>
   </list>
 </object-stream>
