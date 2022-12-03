@@ -43,5 +43,9 @@ public class EventPost extends Post {
 
         return str;
     }
+    @Override
+    public String displayCondensed() {
+        return super.getAuthor() + ": Event(" + eventName + ", €" + eventCost + ")";
+    }
 
 }

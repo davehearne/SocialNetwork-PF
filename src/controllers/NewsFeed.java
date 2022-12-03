@@ -26,7 +26,7 @@ public class NewsFeed {
         String str = "";
 
         for(Post post: posts) {
-            str += posts.indexOf(post) + ": " + post.display() + "\n";
+            str += posts.indexOf(post) + ": " + post.displayCondensed() + "\n";
         }
 
         if (str.isEmpty()){

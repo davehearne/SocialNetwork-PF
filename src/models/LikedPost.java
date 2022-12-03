@@ -4,7 +4,7 @@ public class LikedPost extends Post {
 
     private int likes = 0;
 
-    public LikedPost(String author){
+    public LikedPost(String author) {
         super(author);
     }
 
@@ -16,25 +16,33 @@ public class LikedPost extends Post {
         this.likes = likes;
     }
 
-    public void likeAPost(){
+    public void likeAPost() {
         likes++;
     }
 
-    public void unlikeAPost(){
+    public void unlikeAPost() {
         likes--;
     }
 
     public String display() {
         String str = super.display();
 
-        if(likes > 0) {
+        if (likes > 0) {
             str += ("  -  " + likes + " people like this.\n");
-        }
-        else {
+        } else {
             str += "0 likes.\n";
         }
 
         return str;
     }
 
+    @Override
+    public String displayCondensed() {
+        if (likes > 0) {
+            return super.getAuthor() + " (" + likes + " likes) ";
+        } else {
+            return super.getAuthor() + " (0 likes) ";
+
+        }
+    }
 }
